@@ -8,7 +8,7 @@ try:
 except subprocess.CalledProcessError as e:
     commit = e.output
 print("Running commit", commit)
-@Client.on_message(Filters.text & Filters.outgoing & Filters.command("ver", prefixes="sg!") & ~Filters.incoming)
+@Client.on_message(utils.command("ver"))
 def ver(client, message):
     response = {"Spyglass": {"commit":commit}, "Pyrogram": {"version": pyrogramver}}
     utils.edit_message(message, response)

@@ -1,10 +1,13 @@
-from pyrogram import Client, Filters
+from pyrogram import Client
 import utils
 
-@Client.on_message(Filters.text & Filters.outgoing & Filters.command("fetch", prefixes="sg!") & ~Filters.incoming)
+@Client.on_message(utils.command("fetch"))
 def fetch(client, message):
     if len(message.command) > 1:
         uid = message.command[1]
-        message.edit_text(f"[Permalink to {uid}](tg://user?id={uid})", parse_mode='markdown')
+        try:
+            utils.edit_message(message, {"Link": utils.HTMLStr(f'<a href="tg://user?id={uid})">🔗</a>')})
+        except ValueError as e:
+            utils.edit_message(message, {"Error": str(e)})
     else:
         message.edit_text("No ID Provided!")
