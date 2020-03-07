@@ -1,9 +1,9 @@
-from pyrogram import Client, MessageHandler
+from pyrogram import Client
 
 import settings
 
-
-app = Client("my_account", api_id=settings.API_ID, api_hash=settings.API_HASH, proxy=settings.PROXY, plugins={"root":settings.PLUGIN_FOLDER})
+app = Client("my_account", api_id=settings.API_ID, api_hash=settings.API_HASH, proxy=settings.PROXY,
+             plugins={"root": settings.PLUGIN_FOLDER})
 
 if __name__ == '__main__':
     app.run()

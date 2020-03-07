@@ -6,7 +6,7 @@ class HTMLStr(str):
     pass
 
 def command(command):
-    return Filters.text & Filters.outgoing & Filters.command(command, prefixes="sg!") & ~Filters.incoming & ~Filters.forwarded
+    return Filters.text & Filters.me & Filters.command(command, prefixes="sg!") & ~Filters.forwarded
 
 def generate_tree(dictionary, level=0):
     lines = []
