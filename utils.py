@@ -1,6 +1,6 @@
 import html
 
-from pyrogram import Filters
+from pyrogram import Filters, Object
 
 class HTMLStr(str):
     pass
@@ -15,13 +15,16 @@ def generate_tree(dictionary, level=0):
     for key, value in dictionary.items():
         key = str(key)
         line = f"<b>{html.escape(key)}</b>: "
-        if isinstance(value, dict) or isinstance(value, list):
-            line += "\n" + generate_tree(value, level+1)
-        elif isinstance(value, HTMLStr):
-            line += value
-        else:
-            line += f"<code>{html.escape(str(value))}</code>"
-        lines.append(html.escape("\u202f" * level) + line)
+        if not (value is None or key.startswith("_")):
+            if isinstance(value, Object):
+                value = value.__dict__
+            if isinstance(value, dict) or isinstance(value, list):
+                line += "\n" + generate_tree(value, level+1)
+            elif isinstance(value, HTMLStr):
+                line += value
+            else:
+                line += f"<code>{html.escape(str(value))}</code>"
+            lines.append(html.escape("\u202f" * level) + line)
     return "\n".join(lines)
 
 
