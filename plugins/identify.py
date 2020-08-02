@@ -4,7 +4,16 @@ import utils
 
 @Client.on_message(utils.command("id"))
 def ver(client, message):
-    response = dict(Chat=message.chat.id, ThisMessage=message.message_id)
+    response = dict(Chat=dict(ID=message.chat.id), ThisMessage=message.message_id)
+    if message.chat.type in ["bot", "supergroup", "channel"]:
+        response["Chat"]["Restricted"] = message.chat.is_restricted
+        if message.chat.is_restricted:
+            for i, restrict in enumerate(message.chat.restrictions):
+                response["Chat"][f"Restrict reason #{i}"] = dict(
+                    Platform=restrict.platform,
+                    Reason=restrict.reason,
+                    Text=restrict.text
+                )
     if message.reply_to_message:
         reply = message.reply_to_message
         response["Reply"] = {"Message": reply.message_id}

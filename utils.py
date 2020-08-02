@@ -1,4 +1,5 @@
 import html
+import time
 
 from pyrogram import Filters, Object
 
@@ -6,7 +7,7 @@ class HTMLStr(str):
     pass
 
 def command(command):
-    return Filters.text & Filters.me & Filters.command(command, prefixes="sg!") & ~Filters.forwarded
+    return Filters.text & Filters.outgoing & Filters.command(command, prefixes="sg!") & ~Filters.forwarded
 
 def generate_tree(dictionary, level=0):
     lines = []
@@ -29,8 +30,11 @@ def generate_tree(dictionary, level=0):
 
 
 
-def edit_message(message, dictionary):
+def edit_message(message, dictionary, delete_soon=False):
     message.edit_text(generate_tree(dictionary))
+    if delete_soon:
+        time.sleep(3)
+        message.delete()
 
 if __name__ == '__main__':
     import json
