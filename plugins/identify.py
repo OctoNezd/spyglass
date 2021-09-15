@@ -1,10 +1,11 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 import utils
 
 
 @Client.on_message(utils.command("id"))
 def ver(client, message):
-    response = dict(Chat=dict(ID=message.chat.id), ThisMessage=message.message_id)
+    response = dict(Chat=dict(ID=message.chat.id),
+                    ThisMessage=message.message_id)
     if message.chat.type in ["bot", "supergroup", "channel"]:
         response["Chat"]["Restricted"] = message.chat.is_restricted
         if message.chat.is_restricted:
